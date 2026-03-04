@@ -5,15 +5,20 @@ public class MergeSort {
 
   /** Mergesort algorithm for int arrays (top-down variant). **/
   public static void sort(int[] array) {
-
-    // TODO exercise 1.2 b
+    int b[] = new int[array.length - 0];
+    sort(array, b, 0, array.length);
   }
   
   /** 
    * Sorts the array between the poistions lo and (including) hi.
    **/
   private static void sort(int[] array, int[] tmp, int lo, int hi) {
-
+      if (hi - lo > 1) {
+        int m = (hi + lo) >>> 1;
+        sort(array, tmp, lo, m);
+        sort(array, tmp, m, hi);
+        merge(array, tmp, lo, m, hi);
+      }
     // TODO exercise 1.2 b
   }
 
@@ -25,7 +30,19 @@ public class MergeSort {
    * array[lo] and array[hi].
    **/
   static void merge(int[] array, int[] tmp, int lo, int mid, int hi) {
-
+    int i = 0;
+    int j = lo;
+    int k = mid;
+    while (j < mid || k < hi) {
+      if (j < mid && (k == hi || array[j] < array[k])) {
+        tmp[i++] = array[j++];
+      } else {
+        tmp[i++] = array[k++];
+      }
+    }
+    for (int l = 0; l < i; l++) {
+      array[lo + l] = tmp[l];
+    }
     // TODO exercise 1.2 a
   }
   
