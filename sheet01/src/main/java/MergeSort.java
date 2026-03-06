@@ -5,21 +5,21 @@ public class MergeSort {
 
   /** Mergesort algorithm for int arrays (top-down variant). **/
   public static void sort(int[] array) {
-    int b[] = new int[array.length - 0];
-    sort(array, b, 0, array.length);
+    int[] tmp = new int[array.length];
+    sort(array, tmp, 0, array.length);
   }
-  
+
   /** 
    * Sorts the array between the poistions lo and (including) hi.
    **/
   private static void sort(int[] array, int[] tmp, int lo, int hi) {
-      if (hi - lo > 1) {
-        int m = (hi + lo) >>> 1;
-        sort(array, tmp, lo, m);
-        sort(array, tmp, m, hi);
-        merge(array, tmp, lo, m, hi);
-      }
-    // TODO exercise 1.2 b
+    if (hi - lo > 1) {
+      // since java has integer operations (binary system) bitwise shifting which means >>> 1 --> /2
+      int mid = (hi + lo) >>> 1;
+      sort(array, tmp, lo, mid);
+      sort(array, tmp, mid, hi);
+      merge(array, tmp, lo, mid - 1, hi - 1);
+    }
   }
 
   /** 
@@ -30,20 +30,19 @@ public class MergeSort {
    * array[lo] and array[hi].
    **/
   static void merge(int[] array, int[] tmp, int lo, int mid, int hi) {
-    int i = 0;
-    int j = lo;
-    int k = mid;
-    while (j < mid || k < hi) {
-      if (j < mid && (k == hi || array[j] < array[k])) {
-        tmp[i++] = array[j++];
+    int count = 0;
+    int left = lo;
+    int right = mid + 1;
+    while (left <= mid || right <= hi) {
+      if (left <= mid && (right > hi || array[left] < array[right])) {
+        tmp[count++] = array[left++];
       } else {
-        tmp[i++] = array[k++];
+        tmp[count++] = array[right++];
       }
     }
-    for (int l = 0; l < i; l++) {
-      array[lo + l] = tmp[l];
+    for (int idx = 0; idx < count; idx++) {
+      array[lo + idx] = tmp[idx];
     }
-    // TODO exercise 1.2 a
   }
-  
+
 }
